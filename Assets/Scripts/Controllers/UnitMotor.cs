@@ -14,7 +14,7 @@ namespace Assets.Scripts.Controllers
         private Vector3 _rotateVector;
         private Quaternion _rotate;
         private float _speedMove = 10;
-        private float _speedRotate = 250;
+        private float _speedRotate = 350;
         private float _jumpPower = 12;
         private float _gravityForce;
 
@@ -33,8 +33,9 @@ namespace Assets.Scripts.Controllers
         public void Move()
         {
             CharacterGravity();
-            CharacterRotate();
+            //CharacterRotate();
             CharacterMove();
+            CharacterLook();
         }
 
         private void CharacterRotate()
@@ -58,23 +59,51 @@ namespace Assets.Scripts.Controllers
 
         }
 
+        private void CharacterLook()
+        {
+            Ray ray = Main.Instance.CameraCurrent.ScreenPointToRay(Main.Instance.InputController.MousePosition);
+
+            Plane plane = new Plane(Vector3.up, _instance.transform.position.y);
+
+            float distance;
+            if (plane.Raycast(ray, out distance))
+            {
+                Vector3 target = ray.GetPoint(distance);
+                Vector3 direction = target - _instance.transform.position;
+
+                float rotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+
+                _instance.transform.rotation = Quaternion.Euler(0, rotation, 0);
+            }
+        }
+
         private void CharacterMove()
         {
             _input = Vector2.zero;
 
             if (_characterController.isGrounded)
             {
-
                 if (Main.Instance.InputController.Up)
                 {
-                    _input.x = 1;
+                    _input.z = 1;
                 }
 
                 if (Main.Instance.InputController.Down)
                 {
+                    _input.z = -1;
+                }
+
+                if (Main.Instance.InputController.Left)
+                {
                     _input.x = -1;
                 }
-                Vector3 desiredMove = _instance.forward * _input.x;
+
+                if (Main.Instance.InputController.Right)
+                {
+                    _input.x = 1;
+                }
+
+                Vector3 desiredMove = _input;
 
                 _moveVector.x = desiredMove.x * _speedMove;
                 _moveVector.z = desiredMove.z * _speedMove;

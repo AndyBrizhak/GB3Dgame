@@ -18,19 +18,22 @@ namespace Assets.Scripts.Controllers
         public FlashlightController()
         {
             _flashlight = MonoBehaviour.FindObjectOfType<Flashlight>();
+
             _flashlight.Switch(false);
             _ui = MonoBehaviour.FindObjectOfType<FlashlightUIImage>();
         }
 
-        public void Recharge()
+        public void Recharge(Battery battery)
         {
-            _flashlight.Recharge();
+            _flashlight.Recharge(battery);
         }
 
         public override void Update()
         {
+            if (Main.Instance.InputController.ButtonF)
+                Switch();
 
-            _ui.Percent =  _flashlight.BatteryChargeCurrent / _flashlight.BatteryChargeMax;
+            _ui.Percent =  _flashlight.BatteryCharge();
             
             if (!_flashlight.EditBatteryCharge())
                 Off();

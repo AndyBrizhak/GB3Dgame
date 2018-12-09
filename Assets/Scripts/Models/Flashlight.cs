@@ -10,17 +10,13 @@ namespace Assets.Scripts.Models
     public class Flashlight : BaseObject
     {
         private Light _light;
-
-        public float BatteryChargeMax { get; private set; }
-        public float BatteryChargeCurrent { get; private set; }
+        private Battery _battery;
 
         protected override void Awake()
         {
             base.Awake();
 
             _light = GetComponent<Light>();
-            BatteryChargeMax = 20.0f;
-            BatteryChargeCurrent = BatteryChargeMax;
         }
 
         public void Switch(bool value)
@@ -30,26 +26,20 @@ namespace Assets.Scripts.Models
 
         public bool EditBatteryCharge()
         {
-            if (BatteryChargeCurrent > 0)
-            {
-                if (_light.enabled)
-                    BatteryChargeCurrent -= Time.deltaTime;
-                else
-                {
-                    if (BatteryChargeCurrent < BatteryChargeMax)
-                        BatteryChargeCurrent += Time.deltaTime / 2.0f;
-                    else
-                        BatteryChargeCurrent = BatteryChargeMax;
-                }
-                return true;
-            }
+            if (!_battery) return false;
 
-            return false;
+            _battery.Use(_light.enabled);
+            return true;
         }
 
-        public void Recharge()
+        public float BatteryCharge()
         {
-            BatteryChargeCurrent = BatteryChargeMax;
+            return _battery ? _battery.ChargePercent : 0;
+        }
+
+        public void Recharge(Battery battery)
+        {
+            _battery = battery;
         }
     }
 }
