@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Hand
   - Bullet
+  - ParticleManager
+  - Enemy
   layers:
   - Default
   - TransparentFX

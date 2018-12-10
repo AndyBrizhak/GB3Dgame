@@ -10,6 +10,7 @@ namespace Assets.Scripts.Models
         protected GameObject _instance;
         protected Transform _transform;
         protected Rigidbody _rigidBody;
+        protected Color _color;
         protected int _layer;
         protected bool _isVisible;
 
@@ -51,6 +52,16 @@ namespace Assets.Scripts.Models
             }
         }
 
+        public Color Color
+        {
+            get { return _color; }
+            set
+            {
+                _color = value;
+                AskColor(transform, _color);
+            }
+        }
+
         public void DisableRigidBody()
         {
             Rigidbody[] rigidbodies = GetComponentsInChildren<Rigidbody>();
@@ -84,6 +95,19 @@ namespace Assets.Scripts.Models
             if (tempCollider)
             {
                 tempCollider.enabled = value;
+            }
+        }
+
+        private void AskColor(Transform obj, Color color)
+        {
+            foreach (var curMaterial in obj.GetComponent<Renderer>().materials)
+            {
+                curMaterial.color = color;
+            }
+            if (obj.childCount <= 0) return;
+            foreach (Transform d in obj)
+            {
+                AskColor(d, color);
             }
         }
 

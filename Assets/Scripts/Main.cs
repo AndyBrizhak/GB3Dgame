@@ -21,6 +21,7 @@ namespace Assets.Scripts
         public CameraController CameraController { get; private set; }
         public FlashlightController FlashlightController { get; private set; }
         public InHandController InHandController { get; private set; }
+        public ParticleManager ParticleManager { get; private set; }
 
         private List<BaseController> _controllers = new List<BaseController>();
         public static Main Instance { get; private set; }
@@ -33,6 +34,7 @@ namespace Assets.Scripts
             Hand = GameObject.FindGameObjectWithTag("Hand").transform;
             CameraCurrent = Camera.main;
             Invertory = new Invertory();
+            ParticleManager = GameObject.FindGameObjectWithTag("ParticleManager").GetComponent<ParticleManager>();
 
             CameraController = new CameraController(CameraCurrent.transform);
             CameraController.Follow(Player.transform);

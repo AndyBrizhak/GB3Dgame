@@ -9,7 +9,6 @@ namespace Assets.Scripts.Models
     public class Ammo : BaseObject
     {
         protected float _timeToDestruct = 4;
-        protected float _baseDamage = 1;
 
         protected override void Awake()
         {
@@ -25,6 +24,11 @@ namespace Assets.Scripts.Models
         {
             if (!_rigidBody) return;
             _rigidBody.AddForce(dir);
+        }
+
+        private void OnDestroy()
+        {
+            Main.Instance.ParticleManager.InstantiateBulletParticle(_instance.transform.position);
         }
     }
 }
