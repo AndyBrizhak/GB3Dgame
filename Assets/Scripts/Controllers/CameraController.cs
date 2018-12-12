@@ -37,6 +37,16 @@ namespace Assets.Scripts.Controllers
             _cameraPositionShouldBe.y += _yOffset;
 
             _camera.position = Vector3.Slerp(_camera.transform.position, _cameraPositionShouldBe, _speed * Time.deltaTime);
+
+            //RaycastHit[] hits = Physics.RaycastAll(_camera.position, _camera.forward, _yOffset -2, LayerMask.GetMask("Default"));
+
+            //foreach(RaycastHit hit in hits)
+            //{
+            //    Debug.Log("Ray " + hit.collider.gameObject.name);
+            //    Renderer c = hit.collider.gameObject.GetComponent<Renderer>();
+            //    if (!c) continue;
+            //    c.material.
+            //}
         }
     }
 }

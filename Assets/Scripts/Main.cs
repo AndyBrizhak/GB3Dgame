@@ -29,7 +29,7 @@ namespace Assets.Scripts
         private void Awake()
         {
             Instance = this;
-
+            
             Player = GameObject.FindGameObjectWithTag("Player");
             Hand = GameObject.FindGameObjectWithTag("Hand").transform;
             CameraCurrent = Camera.main;
