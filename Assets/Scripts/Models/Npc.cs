@@ -13,7 +13,7 @@ namespace Assets.Scripts.Models
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(CapsuleCollider))]
 
-    public class Aim : BaseObject, ISetDamage
+    public class Npc : BaseObject, ISetDamage
     {
         public event Action OnPointChange;
 
@@ -63,12 +63,13 @@ namespace Assets.Scripts.Models
             }
         }
 
-        private void Update()
+        public void Move()
         {
             if (_isDead)
-            {
                 return;
-            }
+
+            if (!_agent)
+                return;
 
             if (target != null)
                 _agent.SetDestination(target.position);

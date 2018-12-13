@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Assets.Scripts.Helpers;
 using Assets.Scripts.Controllers;
+using Assets.Scripts.Models; // tmp
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -22,13 +24,21 @@ namespace Assets.Scripts
         public FlashlightController FlashlightController { get; private set; }
         public InHandController InHandController { get; private set; }
         public ParticleManager ParticleManager { get; private set; }
+        public NpcController NpcController { get; private set; }
+
+        private MapBuilder MapBuilder { get; set; }
 
         private List<BaseController> _controllers = new List<BaseController>();
         public static Main Instance { get; private set; }
 
+        public GameObject en; // tmp
+
         private void Awake()
         {
             Instance = this;
+
+            MapBuilder = new MapBuilder(FindObjectOfType<MapObjectsManager>(), 40, 40);
+            MapBuilder.Generate();
             
             Player = GameObject.FindGameObjectWithTag("Player");
             Hand = GameObject.FindGameObjectWithTag("Hand").transform;
@@ -56,6 +66,10 @@ namespace Assets.Scripts
             FlashlightController = new FlashlightController();
             FlashlightController.Off();
             _controllers.Add(FlashlightController);
+
+            NpcController = new NpcController();
+            NpcController.On();
+            _controllers.Add(NpcController);
         }
 
         private void Update()
@@ -63,6 +77,12 @@ namespace Assets.Scripts
             foreach(var controller in _controllers)
             {
                 controller.Update();
+                if (InputController.ButtonG) // tmp
+                {
+                    GameObject a = Instantiate(en, Player.transform.position, Player.transform.rotation);
+                    a.GetComponent<Npc>().SetTarget(Player.transform);
+                    NpcController.AddNpc(a.GetComponent<Npc>());
+                }
             }
         }
     }

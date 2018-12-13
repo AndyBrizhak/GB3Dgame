@@ -27,10 +27,12 @@ namespace Assets.Scripts.Controllers
             {
                 _item = null;
                 Main.Instance.Invertory.RemoveItemByIndex(_currentItemIndex);
+                UiInterface.CurrentItemText.ShowData("");
             }
             else
+            {
                 UiInterface.WeaponUiText.ShowData(_item.ShowData());
-            UiInterface.CurrentItemText.ShowData(_item ? _item.Name : "");
+            }
         }
 
         public void AuxUse()
